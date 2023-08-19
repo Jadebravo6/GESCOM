@@ -3,7 +3,7 @@ session_start();
 
 // Vérifier si l'utilisateur est connecté
 if (!isset($_SESSION["matricule"])) {
-    header("Location: login.php"); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+    header("Location: auth/login.php"); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
     exit();
 }
 
@@ -13,7 +13,7 @@ $matricule = $_SESSION["matricule"];
 if (isset($_POST["deconnexion"])) {
     session_unset(); // Supprimer toutes les variables de session
     session_destroy(); // Détruire la session
-    header("Location: login.php"); // Rediriger vers la page de connexion après la déconnexion
+    header("Location: auth/login.php"); // Rediriger vers la page de connexion après la déconnexion
     exit();
 }
 
@@ -51,7 +51,7 @@ try {
 <html>
 <head>
     <title>Accueil</title>
-    <link rel="stylesheet" type="text/css" href="style.css"> <!-- Lien vers le fichier style.css -->
+    <link rel="stylesheet" type="text/css" href="style/style.css"> <!-- Lien vers le fichier style.css -->
 </head>
 <body>
 <meta http-equiv="refresh" content="30"> <!-- Actualise la page toutes les 30 secondes -->
@@ -61,14 +61,10 @@ try {
     <main>
 
     <div class="dash">
-
-        <p>Vous êtes connecté en tant que : <?php echo $user['nom'] . ' ' . $user['postnom'] . ' ' . $user['prenom']; ?></p>
+        <p>Vous êtes connecté en tant que : <span><?php echo $user['nom'] . ' ' . $user['postnom'] . ' ' . $user['prenom']; ?></span></p>
         <form method="post">
-         
             <input type="submit" name="deconnexion" value="Se déconnecter" div class="deconnexion">
-          
         </form>
-    
     </div>
         
 
@@ -77,7 +73,7 @@ try {
             <?php foreach ($publications as $publication) { ?>
                 <li class="publication-item">
                     <div class="publication-preview">
-                        <a href="full.php?id=<?php echo $publication['id']; ?>" class="publication-link">
+                        <a href="util/full.php?id=<?php echo $publication['id']; ?>" class="publication-link">
                             <strong><?php echo $publication['titre_publication']; ?></strong><br>
                             <?php echo substr($publication['contenu_publication'], 0, 20) . (strlen($publication['contenu_publication']) > 20 ? "..." : ""); ?>
                         </a>
@@ -131,7 +127,7 @@ function updatePublicationList() {
                 listItem.className = 'publication-item';
                 listItem.innerHTML = `
                     <div class="publication-preview">
-                        <a href="full.php?id=${publication.id}" class="publication-link">
+                        <a href="util/full.php?id=${publication.id}" class="publication-link">
                             <strong>${publication.titre_publication}</strong><br>
                             ${publication.contenu_publication.substring(0, 20) + (publication.contenu_publication.length > 20 ? "..." : "")}
                         </a>
@@ -142,7 +138,7 @@ function updatePublicationList() {
             });
         }
     };
-    xhr.open('GET', 'get_publications.php', true);
+    xhr.open('GET', 'util/get_publications.php', true);
     xhr.send();
 }
 
