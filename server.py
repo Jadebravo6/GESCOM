@@ -1,12 +1,22 @@
+from flask import Flask, render_template, request
 import socket
-import threading
+
+app = Flask(__name__)
 
 # Paramètres du serveur
 HOST = '0.0.0.0'  # Écoute sur toutes les interfaces disponibles
-PORT = 8000  # Spécifiez le port de votre choix
+PORT = 12345  # Spécifiez le port de votre choix
 
 # Dictionnaire pour stocker les connexions des clients
 clients = {}
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/chat')
+def chat():
+    return render_template('chat.html')
 
 # Fonction pour gérer les messages entrants d'un client
 def handle_client(client_socket, username):
@@ -41,11 +51,11 @@ def main():
     print(f"Serveur de chat en écoute sur {HOST}:{PORT}")
 
     while True:
-        client_socket, client_addr = server.accept()
+        client_socket, _ = server.accept()
         username = client_socket.recv(1024).decode('utf-8')
         clients[username] = client_socket
 
-        print(f"{username} a rejoint le chat depuis {client_addr}")
+        print(f"{username} a rejoint le chat.")
         broadcast(f"{username} a rejoint le chat.")
 
         # Démarrer un thread pour gérer les messages du client
