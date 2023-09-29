@@ -2,8 +2,8 @@ import socket
 import threading
 
 # Paramètres du serveur
-HOST = '127.0.0.1'  # Écoute sur toutes les interfaces disponibles
-PORT = 8000
+HOST = '0.0.0.0'  # Écoute sur toutes les interfaces disponibles
+PORT = 8000  # Spécifiez le port de votre choix
 
 # Dictionnaire pour stocker les connexions des clients
 clients = {}
